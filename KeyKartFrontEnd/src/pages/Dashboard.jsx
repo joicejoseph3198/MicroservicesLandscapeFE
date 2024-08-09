@@ -7,7 +7,6 @@ import { setSelectedImages, uploadToBucket } from "../redux/slices/imageUploadSl
 import { useDispatch, useSelector } from "react-redux";
 import { addProductImages, createProduct, resetForm, updateField } from "../redux/slices/addProductSlice";
 import { useEffect } from "react";
-import SearchBar from "../components/SearchBar";
 import { useAxios } from "../utils/axiosUtil";
 
 export const Dashboard = () => {
@@ -50,16 +49,6 @@ export const Dashboard = () => {
 
     return(
         <div className="flex h-full text-stone-600">
-            <div className="flex-auto p-5 w-1/12 bg-gray-50 border-r-2 border-slate-300 ">
-                <SearchBar/>
-                <div className="flex flex-col gap-5 pt-10">
-                    <ul>Page Manager</ul>
-                    <ul>My Shop</ul>
-                    <ul>Analytics</ul>
-                    <ul>Promotion</ul>
-                    <ul>Team Manager</ul>
-                </div>
-            </div>
             <div className="flex-auto w-9/12 p-10">
                 {/*BEGIN Page Navigation*/}
                 <p className="text-md text-left text-gray">Back to product list</p>
@@ -138,7 +127,7 @@ export const Dashboard = () => {
                                     <InputTextField title="Breadth" placeholder="in" name="size.breadth" valueStore={productData.size.breadth} onChangeHandler={handleInputChange}/>
                                     <InputTextField title= "Height" placeholder="in" name="size.height" valueStore={productData.size.height} onChangeHandler={handleInputChange}/>
                                 </div>
-                                <InputTextField title= "Item Weight" placeholder="kg" name="weight" value={productData.weight} onChangeHandler={handleInputChange}/>
+                                <InputTextField title= "Item Weight" placeholder="kg" name="weight" valueStore={productData.weight} onChangeHandler={handleInputChange}/>
                             </div>
                         </div>
                         {/*END Inventory Details Section*/}
@@ -165,7 +154,6 @@ export const Dashboard = () => {
                             </div>
                         </div>
                         {/*END Buttons Section*/}
-
                     </div>
                 </div>
             </div>

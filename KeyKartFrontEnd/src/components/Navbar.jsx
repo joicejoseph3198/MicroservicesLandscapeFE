@@ -32,9 +32,9 @@ export const Navbar = () => {
         <nav>
           <ul className="flex flex-wrap flex-row gap-2 content-center color-black w-fit rounded-full border border-slate-700 px-4 py-1.5 text-2xl">
             <li><Link to="/">Home</Link> </li>
-            <li><Link to="">Orders</Link></li>
+            <li><Link to="/shop">Shop</Link></li>
             <li><Link to="">Profile</Link></li>
-            <li><Link to="dashboard">Dashboard</Link></li>
+            <li><Link to="admin-section">Dashboard</Link></li>
             <li>{ isAuthenticated ?
             (<button onClick={handleLogout}>Logout</button>):
             (<button onClick={handleLogin}>Login</button>)}</li>
