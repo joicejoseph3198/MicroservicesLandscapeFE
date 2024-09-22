@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
           element: <AdminSection/>,
           children:[
             {
-              path:"",
+              path:"/admin-section/:id?",
               element: <Dashboard/>
             },
             {

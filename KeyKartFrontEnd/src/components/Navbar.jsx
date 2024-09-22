@@ -25,12 +25,12 @@ export const Navbar = () => {
     }
 
     return(
-        <div className="flex flex-row flex-wrap justify-between border-b-2 pb-2 border-black font-['NeueBit'] text-md p-2">
-        <div className="text-3xl">
-          <div className="font-black"> KeyBids&trade; </div>
+        <div className="flex flex-row flex-wrap justify-between border-b-2  border-black font-['NeueBit'] p-1">
+        <div className="text-xl py-1 mx-2">
+          <div className="font-black"> KeyBid &trade; </div>
         </div>
         <nav>
-          <ul className="flex flex-wrap flex-row gap-2 content-center color-black w-fit rounded-full border border-slate-700 px-4 py-1.5 text-2xl">
+          <ul className="flex flex-row gap-2 color-black w-fit rounded-full border-2 p-1 border-slate-700 px-4 py-1.4 text-lg">
             <li><Link to="/">Home</Link> </li>
             <li><Link to="/shop">Shop</Link></li>
             <li><Link to="">Profile</Link></li>

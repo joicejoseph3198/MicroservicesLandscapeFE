@@ -73,6 +73,10 @@ const imageUploadSlice = createSlice({
             state.previewUrls.forEach((previewUrl, index) => {
                 previewUrl.position = index;
             });
+        },
+        resetImages: (state)=> {
+            state.previewUrls = [];
+            state.storageUrls = [];
         }
     },
     extraReducers: (builder) => {
@@ -90,5 +94,5 @@ const imageUploadSlice = createSlice({
 }
 })
 
-export const {setSelectedImages, discardImage} = imageUploadSlice.actions;
+export const {setSelectedImages, discardImage, resetImages} = imageUploadSlice.actions;
 export default imageUploadSlice.reducer;
