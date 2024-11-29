@@ -1,12 +1,16 @@
+import SearchBar from "../components/SearchBar";
+
 export const Home = () => {
   return (
     <div>
       <div>
-        <p className="p-10 text-left text-5xl lg:text-8xl font-['NeueBit'] text-slate-700">
-          Bid, Win, Type.
-        </p>
-        <div className='relative w-full h-[100px] md:h-[200px] lg:h-[300px] overflow-hidden object-cover'>
-            <img  className="md:-translate-y-3/3" src="src/assets/images/configure-product-banner.jpg"></img>
+        <div className="flex flex-row justify-between">
+          <p className="p-10 text-left text-5xl lg:text-8xl font-['NeueBit'] text-slate-700">
+            Bid, Win, Type.
+          </p>
+        </div>
+        <div className='relative w-full h-full md:h-[200px] lg:h-[500px] overflow-hidden object-cover'>
+            <img  className="md:-translate-y-1/3" src="src/assets/images/home-page-banner.jpg"></img>
         </div>
       </div>
       <div className="slider overflow w-full h-fit text-sm md:text-lg py-10">

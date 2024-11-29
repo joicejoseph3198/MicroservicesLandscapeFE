@@ -4,14 +4,46 @@ import { InputTextField } from "./InputTextField";
 import { MdCurrencyRupee } from "react-icons/md";
 import { MdClear } from "react-icons/md";
 import { setBidAmount } from "../redux/slices/shopSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchAuctionDetails } from "../redux/slices/auctionSlice";
+import { useAxios } from "../utils/axiosUtil";
+import { toast } from "react-toastify";
+import { useAuth0 } from "@auth0/auth0-react";
+import { placeBid } from "../redux/slices/bidSlice";
+import useAuctionSSE from "../hooks/useAuctionSSE";
 
 const BiddingModal = (props) => {
   const modalType = useSelector((state) => state.shop.modalType);
   const bidAmount = useSelector((state) => state.shop.bidAmount);
+  const auctionDetails = useSelector((state) => state.auction);
   const dispatch = useDispatch();
+  const axiosInstance = useAxios();
+  const { user, isAuthenticated } = useAuth0();
   const [bidValue, setBidValue] = useState(null);
   const { productData, closeModalHandler } = props;
+
+  const placeBidRequest = async ()=> {
+    const requestBody = {
+      user: user?.email,
+      auctionId: auctionDetails?.id,
+      amount: bidAmount,
+      timeStamp: new Date().toISOString(),
+      buyNowTriggered: false
+    }
+    const response = await dispatch(placeBid({requestBody, axiosInstance}))
+        console.log("Auction schedule API response", response)
+        if(response?.payload?.status){
+            toast.success(`${response?.payload?.data}`)
+        }else{
+            toast.error(`${response?.payload?.message}` )
+        }
+        closeModalHandler();
+  }
+ 
+  // fetch the associated auction details
+  useEffect(()=>{
+    dispatch(fetchAuctionDetails({skuCode: productData?.skuCode, axiosInstance}));
+  },[dispatch, productData?.skuCode,axiosInstance]);
 
   const handleBidChange = (event) => {
     const amount = event.target.value;
@@ -21,12 +53,14 @@ const BiddingModal = (props) => {
       dispatch(setBidAmount(numericValue));
     } else {
       // Handle the case where the input value is not a number
-      console.error("Invalid input: Please enter a numerical value");
+      toast.error("Invalid input: Please enter a numerical value");
     }
   };
 
   const updateBid = (value) => {
-    if(bidAmount <= productData.bidStartPrice){
+    if(bidAmount < auctionDetails?.highestBid){
+      dispatch(setBidAmount(auctionDetails.highestBid + value))
+    } else if(bidAmount <= productData.bidStartPrice){
       dispatch(setBidAmount(productData.bidStartPrice + value))
     }else{
       dispatch(setBidAmount(bidAmount + value));
@@ -51,9 +85,9 @@ const BiddingModal = (props) => {
           <div className="text-left px-2 pb-10">
             <h2 className="text-lg text-slate-700 pb-2"> Bidding Details </h2>
             <div className="p-5 border-2 rounded-md text-md">
-              <h3>Bid Start Price</h3>
+              <h3>{auctionDetails?.highestBid? "Current Highest Bid" : "Bid Start Price"} </h3>
               <p className="flex flex-row items-center text-4xl lg:text-6xl">
-                <MdCurrencyRupee /> {productData.bidStartPrice} 
+                <MdCurrencyRupee /> {auctionDetails?.highestBid ? auctionDetails?.highestBid : productData?.bidStartPrice} 
                 {bidValue !== null && (
                   <span className="text-4xl text-slate-300"> +{bidValue}</span>
                 )}
@@ -91,7 +125,7 @@ const BiddingModal = (props) => {
                 <CustomButton
                   color="blue"
                   buttonText="Place Bid"
-                  onClickHandler={closeModalHandler}
+                  onClickHandler={placeBidRequest}
                 />
               </div>
             </div>

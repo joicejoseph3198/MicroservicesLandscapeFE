@@ -5,6 +5,7 @@ import { Dashboard } from "../pages/Dashboard";
 import { AdminSection } from "../pages/AdminSection";
 import { ProductListing } from "../pages/ProductListing";
 import Shop from "../pages/Shop";
+import ProductDetails from "../pages/ProductDetails";
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
         {
           path:"shop",
           element: <Shop/>
+        },
+        {
+          path:"details/:id?",
+          element: <ProductDetails/>
         },
         {
           path:"admin-section",

@@ -88,7 +88,7 @@ export const Dashboard = () => {
         <p className="text-md text-left text-gray flex flex-row items-center hover:cursor-pointer" onClick={()=>backToListing()}>
             <MdArrowBack/> Back to product list</p>
         <h2 className="text-5xl lg:text-8xl text-left text-slate-700 font-['NeueBit']">
-            Dashboard/Add New Product
+           {id ? "Dashboard/ View-Update-Schedule" : "Dashboard/Add New Product"}
         </h2>
       </div>
         {/*END Page Navigation*/}
@@ -224,10 +224,10 @@ export const Dashboard = () => {
               </h2>
               <div className="p-5 border-2 rounded-md text-sm">
                 <InputTextField
-                  title="SKU Code (Optional)"
+                  title="SKU Code (Auto Generated)"
                   placeholder="Enter SKU code"
                   name="skuCode"
-                  valueStore={productData.skuCode}
+                  valueStore={productData.skuCode.toUpperCase()}
                   onChangeHandler={handleInputChange}
                 />
                 <h3 className="flex-auto py-2">Package Size (used to ship)</h3>

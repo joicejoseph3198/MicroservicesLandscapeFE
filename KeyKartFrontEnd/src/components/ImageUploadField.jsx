@@ -11,7 +11,7 @@ export const ImageUploadField = (props) => {
         >
           {typeof previewUrl === 'string' ? (
             <img
-              className="object-cover w-full h-full "
+              className="object-cover w-full h-full"
               src={previewUrl}
               alt={`Preview ${index}`}
             />

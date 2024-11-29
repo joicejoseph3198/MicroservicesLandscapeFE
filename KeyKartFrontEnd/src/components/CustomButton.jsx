@@ -3,7 +3,7 @@ export const CustomButton = (props) => {
     const buttonVariants = {
         blue: 'bg-blue-600 hover:bg-blue-500 text-white',
         gray: 'bg-gray-200 hover:bg-gray-100 text-blue-600',
-        white: 'bg-white hover:bg-gray-100 text-slate-700 border-slate-300',   
+        white: 'bg-white hover:bg-gray-100 text-slate-700 border-slate-400',   
     }
     return (
         <button onClick={onClickHandler} onMouseEnter={mouseEnterHandler} onMouseLeave={mouseExitHandler}

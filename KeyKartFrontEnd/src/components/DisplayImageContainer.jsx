@@ -25,7 +25,7 @@ const DisplayImageContainer = (props) => {
   };
 
   return (
-    <div className="relative h-[300px] w-full rounded-md border-2 object-cover overflow-hidden border-slate-600 border-2 hover:border-blue-500"
+    <div className="relative h-[300px] w-full rounded-md border-2 object-cover overflow-hidden border-slate-400 border-2 hover:border-blue-500"
     onMouseEnter={() => setIsHovering(true)}
     onMouseLeave={() => {
       setIsHovering(false);
@@ -34,26 +34,32 @@ const DisplayImageContainer = (props) => {
       <img 
         src={imageUrls[currentImageIndex]} 
         alt={`Product ${currentImageIndex + 1}`}
-        className="w-full h-full object-cover"
+        className={`w-full h-full object-cover ${productData?.status.toUpperCase() === "PRODUCT UNAVAILABLE" ? "grayscale" : ""}`}
       />
       <div>
+      { 
+      productData?.status?.toUpperCase() == "START BIDDING" && 
+      <div>
         <div
-          className="absolute top-2 left-2 text-xl size-8 bg-white border-2 p-1 hover:bg-blue-500 hover:text-white hover:cursor-pointer"
+          className="absolute top-2 left-2 text-xl size-8 bg-white border-slate-400 border-2 p-1 hover:bg-blue-500 hover:text-white hover:cursor-pointer"
           title="Buy Now"
           onClick={()=>openModal("BUY")}
         >
           <MdOutlineControlPoint />
         </div>
         <div
-          className="absolute top-2 left-12 text-xl size-8 bg-white border-2 p-1 hover:bg-blue-500 hover:text-white hover:cursor-pointer"
+          className="absolute top-2 left-12 text-xl size-8 border-slate-400 bg-white border-2 p-1 hover:bg-blue-500 hover:text-white hover:cursor-pointer"
           title="Place Bid"
           onClick={()=>openModal("BID")}
         >
           <MdCurrencyRupee />
         </div>
-        <div>
-          
-        </div>
+      </div> 
+      }
+        
+        <h3 className="absolute bottom-2 right-2 border-slate-400 bg-white border-2 text-black text-lg rounded-full  font-['NeueBit'] m-1 px-4 w-fit" title='View Details'>
+            {productData?.status.toUpperCase()}
+        </h3>
       </div>
     </div>
   );

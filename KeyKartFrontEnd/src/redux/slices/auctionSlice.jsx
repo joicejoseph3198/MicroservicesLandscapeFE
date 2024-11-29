@@ -7,7 +7,20 @@ export const scheduleAuction = createAsyncThunk(
         try{
             const {requestBody, axiosInstance} = params;
             const response = await axiosInstance.post(`/auction/`, requestBody);
-            return response;
+            return response?.data;
+        }catch(error){
+            console.log(error)
+        }
+    }
+)
+
+export const endAuction = createAsyncThunk(
+    "auction/end",
+    async (params) => {
+        try{
+            const {skuCode,axiosInstance} = params;
+            const response = await axiosInstance.delete(`/auction/${skuCode}`);
+            return response?.data;
         }catch(error){
             console.log(error)
         }
@@ -15,12 +28,12 @@ export const scheduleAuction = createAsyncThunk(
 )
 
 export const fetchAuctionDetails = createAsyncThunk(
-    "auction/schedule",
+    "auction/details",
     async (params) => {
         try{
             const {skuCode, axiosInstance} = params;
-            const response = await axiosInstance.post(`/auction/`, requestBody);
-            return response;
+            const response = await axiosInstance.get(`/auction/${skuCode}`); 
+            return response?.data?.data;
         }catch(error){
             console.log(error)
         }
@@ -34,11 +47,14 @@ const auctionSlice = createSlice({
             isError: false,
             isLoading: false
         },
+        id: 0,
         productSkuCode: null,
         bidStartPrice: 0,
-        buyNowProce:0,
-        startTime:null,
-        endTime:null
+        buyNowPrice: 0,
+        startTime: null,
+        endTime: null,
+        auctionStatus: null,
+        highestBid: null
     },
     reducers:{
         updateField: (state, action) => {
@@ -55,11 +71,14 @@ const auctionSlice = createSlice({
                 isError: false,
                 isLoading: false
             }
-            state.productSkuCode = null,
-            state.bidStartPrice = 0,
-            state.buyNowProce = 0,
-            state.startTime =null,
+            state.id = 0;
+            state.productSkuCode = "";
+            state.bidStartPrice = 0;
+            state.buyNowPrice = 0;
+            state.startTime =null;
             state.endTime= null;
+            state.auctionStatus = null;
+            state.highestBid = null;
         }
     },
     extraReducers:(builder) =>{
@@ -73,7 +92,38 @@ const auctionSlice = createSlice({
              state.state.isError = false;
              state.state.isLoading = false;
          });
+         builder.addCase(endAuction.rejected, (state)=>{
+            state.state.isError = true;
+         });
+         builder.addCase(endAuction.pending, (state)=>{
+             state.state.isLoading = true;
+         });
+         builder.addCase(endAuction.fulfilled, (state)=>{
+             state.state.isError = false;
+             state.state.isLoading = false;
+        }); 
+         builder.addCase(fetchAuctionDetails.rejected, (state)=>{
+            state.state.isError = true;
+         });
+         builder.addCase(fetchAuctionDetails.pending, (state)=>{
+             state.state.isLoading = true;
+         });
+         builder.addCase(fetchAuctionDetails.fulfilled, (state, action)=>{
+             state.state.isError = false;
+             state.state.isLoading = false;
+             const apiResponse = action.payload;
+             if(apiResponse){
+                state.id = apiResponse.id;
+                state.auctionStatus = apiResponse.auctionStatus;
+                state.productSkuCode = apiResponse.productSkuCode;
+                state.bidStartPrice = apiResponse.bidStartPrice;
+                state.buyNowPrice = apiResponse.buyNowPrice;
+                state.startTime = apiResponse.startTime;
+                state.endTime = apiResponse.endTime;
+                state.highestBid = apiResponse.highestBid;
+             }
+         }); 
     }
 })
-export const {updateField} = auctionSlice.actions;
+export const {updateField, resetFields} = auctionSlice.actions;
 export default auctionSlice.reducer;

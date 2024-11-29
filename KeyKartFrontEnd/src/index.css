@@ -14,6 +14,10 @@
   font-family: 'NeueBit';
   src: url(./assets/fonts/PPNeueBit-Bold.otf)format('opentype');
 }
+@font-face {
+  font-family: 'Fuji';
+  src: url(./assets/fonts/PPFuji-Bold.otf)format('opentype');
+}
 
 :root {
   font-family: Mori;

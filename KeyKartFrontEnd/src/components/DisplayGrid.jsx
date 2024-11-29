@@ -4,6 +4,8 @@ import BiddingModal from "./BiddingModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 import { useAxios } from "../utils/axiosUtil";
+import Loader from "./Loader";
+import { CustomButton } from "./CustomButton";
 
 //   {
 //     productName: "OPAL Base 65 Keyboard",
@@ -401,10 +403,14 @@ const DisplayGrid = () => {
 
   return (
     <>
+	<div className="flex flex-row justify-between border-y-2 border-slate-400 p-2 my-5">
+		<CustomButton color="white" buttonText="Filters"/>
+		<CustomButton color="white" buttonText="Sort"/>
+	</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 py-10">  
         {data.length > 0 ? (data.map((product) => (
           <DisplayCard key={product.skuCode} productData={product} />
-        ))):<p className="text-sm text-left"> No product available currently.</p>}
+        ))): <p className="text-left"> <Loader/> </p>}
       </div>
       {currentProduct && shopData.modalType && (
         <BiddingModal

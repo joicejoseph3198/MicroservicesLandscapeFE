@@ -16,9 +16,10 @@ export const fetchCatalogue = createAsyncThunk(
 const shopSlice = createSlice({
     name: "shop",
     initialState :{
-        biddingModalSku: null,
-        modalType: null,
+        biddingModalSku: null, // To identify which product's modal is to be opened
+        modalType: null, // to differentiate b/w BID OR BUY NOW modal
         bidAmount:0,
+        buyNow: false,
         catalogue:{
             isLoading: false,
             isError: false,

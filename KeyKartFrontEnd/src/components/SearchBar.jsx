@@ -13,7 +13,7 @@ const SearchBar = () => {
     // }
     
     return(
-        <div className="mt-10 py-2 px-6 rounded-full bg-gray-50 border flex">
+        <div className="mt-10 py-2 px-6 mx-5 rounded-full bg-gray-50 border flex h-[50px]">
             <input type="text" placeholder="Search" 
             className="bg-transparent w-full focus:outline-none pr-4 text-sm font-semibold border-0 " 
            />
