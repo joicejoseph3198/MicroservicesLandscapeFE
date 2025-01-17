@@ -43,14 +43,14 @@ const useAuctionSSE = ({ auctionId, clientId, skuCode, axiosInstance }) => {
       eventSource.onmessage = (event) => {
         try {
           const parsedEvent = JSON.parse(event.data);
-          
+          console.log("PARSED EVENT DATA", parsedEvent)
           switch (parsedEvent.eventType) {
             case 'CONNECTION_ESTABLISHED':
-              console.log('Connected:', parsedEvent.data);
+              console.debug('Connected:', parsedEvent.data);
               break;
             
             case 'HEARTBEAT':
-              console.log('Heartbeat received');
+              console.debug('Heartbeat received');
               break;
             
             case 'NEW_HIGHEST_BID':
@@ -68,7 +68,7 @@ const useAuctionSSE = ({ auctionId, clientId, skuCode, axiosInstance }) => {
               break;
             
             case 'AUCTION_OVER':
-              toast.info(`Auction has ended. Final amount: ₹${parsedEvent.data}`);
+              toast.info(`Auction has ended. Sold for: ₹${parsedEvent.data}`);
               dispatch(fetchAuctionDetails({ skuCode, axiosInstance }));
               eventSource.close();
               break;
@@ -93,8 +93,7 @@ const useAuctionSSE = ({ auctionId, clientId, skuCode, axiosInstance }) => {
     };
     
     connect();
-    console.log("Connect called", auctionId, clientId, skuCode, axiosInstance)
-    
+  
     // Cleanup function
     return () => {
       if (eventSource) {

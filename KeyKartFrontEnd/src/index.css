@@ -15,11 +15,12 @@
   src: url(./assets/fonts/PPNeueBit-Bold.otf)format('opentype');
 }
 @font-face {
-  font-family: 'Fuji';
-  src: url(./assets/fonts/PPFuji-Bold.otf)format('opentype');
+  font-family: 'RockSalt';
+  src: url(./assets/fonts/RockSalt-Regular.ttf)format('opentype');
 }
 
 :root {
+  height: 100%;
   font-family: Mori;
   line-height: 1.5;
   background-color: white;

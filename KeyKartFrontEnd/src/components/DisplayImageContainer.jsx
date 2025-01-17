@@ -34,7 +34,7 @@ const DisplayImageContainer = (props) => {
       <img 
         src={imageUrls[currentImageIndex]} 
         alt={`Product ${currentImageIndex + 1}`}
-        className={`w-full h-full object-cover ${productData?.status.toUpperCase() === "PRODUCT UNAVAILABLE" ? "grayscale" : ""}`}
+        className={`w-full h-full object-cover ${productData?.status.toUpperCase() === "PRODUCT UNAVAILABLE"  ? "grayscale" : ""}`}
       />
       <div>
       { 
@@ -57,7 +57,9 @@ const DisplayImageContainer = (props) => {
       </div> 
       }
         
-        <h3 className="absolute bottom-2 right-2 border-slate-400 bg-white border-2 text-black text-lg rounded-full  font-['NeueBit'] m-1 px-4 w-fit" title='View Details'>
+        <h3 className={`absolute bottom-2 right-2 border-slate-400 
+        ${productData?.status.toUpperCase() === "START BIDDING" ? "bg-green-400 animate-bounce" : "bg-white"}
+         border-2 text-black text-lg rounded-full font-['NeueBit'] m-1 px-4 w-fit`} title='View Details'>
             {productData?.status.toUpperCase()}
         </h3>
       </div>

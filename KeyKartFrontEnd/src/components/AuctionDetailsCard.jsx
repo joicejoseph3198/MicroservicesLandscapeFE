@@ -91,16 +91,16 @@ const AuctionDetailsCard = () => {
             case 'START BIDDING':
                 return (
                     <>
-                        <h3>{ auctionDetails?.highestBid ? "CURRENT HIGHEST BID": "BID START PRICE"}</h3>
-                        <div className="flex flex-row items-center text-2xl lg:text-2xl">
+                        <h3 className='text-sm md:text-md'>{ auctionDetails?.highestBid ? "CURRENT HIGHEST BID": "BID START PRICE"}</h3>
+                        <div className="flex flex-row items-center text-xl md:text-3xl">
                             <MdCurrencyRupee /> { auctionDetails?.highestBid ? auctionDetails?.highestBid : auctionData?.bidStartPrice || "NIL"}
                         </div>
-                        <h3>BUY NOW PRICE</h3>
-                        <div className="flex flex-row items-center text-2xl lg:text-2xl">
+                        <h3 className='text-sm md:text-md'>BUY NOW PRICE</h3>
+                        <div className="flex flex-row items-center text-xl md:text-3xl">
                             <MdCurrencyRupee /> {auctionData?.buyNowPrice || "NIL"}
                         </div>
-                        <h3>AUCTION ENDS IN</h3>
-                        <div className="flex flex-row items-center text-2xl lg:text-4xl">
+                        <h3 className='text-sm md:text-md'>AUCTION ENDS IN</h3>
+                        <div className="flex flex-row items-center text-2xl md:text-5xl">
                         {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
                         </div>
                     </>
@@ -108,15 +108,15 @@ const AuctionDetailsCard = () => {
             case 'COMING SOON':
                 return (
                     <>
-                        <h3>AUCTION START</h3>
+                        <h3 className='text-sm md:text-md'>AUCTION START</h3>
                         <div className="flex flex-row items-center text-2xl lg:text-2xl">
                             {dayjs(auctionData?.startTime).format('DD-MM-YYYY HH:mm:ss')}
                         </div>
-                        <h3>AUCTION END</h3>
+                        <h3 className='text-sm md:text-md'>AUCTION END</h3>
                         <div className="flex flex-row items-center text-2xl lg:text-2xl">
                             {dayjs(auctionData?.endTime).format('DD-MM-YYYY HH:mm:ss')}
                         </div>
-                        <h3>AUCTION BEGINS IN</h3>
+                        <h3 className='text-sm md:text-md'>AUCTION BEGINS IN</h3>
                         <div className="flex flex-row items-center text-2xl lg:text-4xl">
                         {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
                         </div>
@@ -130,10 +130,10 @@ const AuctionDetailsCard = () => {
     };
 
     return (
-        <div className='text-left text-md lg:text-lg lg:px-5 text-slate-500 rounded-md flex flex-col justify-center text-lg w-full'>
+        <div className='text-left text-md lg:text-lg lg:px-5 text-slate-500 rounded-md flex flex-col justify-center text-lg w-fit'>
             <div className='p-2'>
-            <p className='text-sm lg:text-lg py-5'> SKU : {auctionData?.productSkuCode?.toUpperCase() || "N/A"} | <span className='text-black font-[MoriBold] '>{auctionData?.auctionStatus?.toUpperCase() || "CURRENTLY UNAVAILABLE"}</span></p>
-            <div className='border-t-2 border-slate-300 p-5'>
+            <p className='text-sm lg:text-xl py-5'> SKU : {auctionData?.productSkuCode?.toUpperCase() || "N/A"} | <span className='text-black font-[MoriBold] '>{auctionData?.auctionStatus || "CURRENTLY UNAVAILABLE"}</span></p>
+            <div className='border-t-2 border-slate-300 py-5'>
                 <div className='text-md lg:text-lg text-left text-black'>
                     <div className=" text-left flex flex-col gap-2">
                        {renderAuctionDetails()}
@@ -141,12 +141,31 @@ const AuctionDetailsCard = () => {
                     </div>
                 </div>
             </div>
-            {
-                auctionData?.auctionStatus?.toUpperCase() === 'START BIDDING' && (
-                    <div className='flex flex-row border-t-2 gap-5 pt-5 text-lg'>
-                    <CustomButton buttonText="Place Bid" color="blue" onClickHandler={()=>openModal("BID")} />
-                    <CustomButton buttonText="Trigger Buy Now" color="white"  onClickHandler={()=>openModal("BUY")} />
+           
+            <div className='flex flex-col border-t-2 gap-5 py-5 text-sm lg:text-lg'>
+                <h2 className='text-slate-black'> How it works?</h2>
+                <div className='text-black'>
+                   Bidding:
+                   <ul className='pl-5 text-slate-500'>
+                    <li> * Place a bid higher than the current price to participate in the auction.</li>
+                    <li> * Keep an eye on the timer—once it ends, the highest bidder wins!</li>
+                    <li> * You’ll receive notifications if you’re outbid so you can place another bid.</li>
+                   </ul>
                 </div>
+                <div className='text-black'>
+                   Buy Now:
+                   <ul className='pl-5 text-slate-500'>
+                      <li>* Don’t want to wait?</li>
+                      <li>* Use the "Buy Now" option to purchase the item immediately at the fixed price.</li>
+                   </ul>
+                </div>
+            </div>
+           
+            {   auctionData?.auctionStatus?.toUpperCase() === 'START BIDDING' && (
+                    <div className='flex flex-row border-t-2 gap-5 pt-5 text-lg'>
+                        <CustomButton buttonText="Place Bid" color="blue" onClickHandler={()=>openModal("BID")} />
+                        <CustomButton buttonText="Trigger Buy Now" color="white"  onClickHandler={()=>openModal("BUY")} />
+                    </div>
                 )
             }
            

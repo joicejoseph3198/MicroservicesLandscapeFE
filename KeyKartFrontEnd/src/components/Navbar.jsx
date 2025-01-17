@@ -25,9 +25,9 @@ export const Navbar = () => {
     }
 
     return(
-        <div className="text-slate-800 flex flex-row flex-wrap justify-between items-center border-b-2  border-black font-['NeueBit'] px-5">
-        <div className="text-8xl py-1 mx-2">
-          <div className="font-['Fuji']"> KEYBIDS.</div>
+        <div className="text-slate-800 flex flex-row flex-wrap md:justify-between justify-around items-center border-b-2  border-black font-['NeueBit'] px-5">
+        <div className="text-4xl py-1 mx-2">
+          <div className="font-['RockSalt']"> KEYBIDS.</div>
         </div>
         <nav className="p-5">
           <ul className="flex flex-row justify-center gap-2 color-black w-fit rounded-full border-2 p-1 border-slate-700 px-4 py-1.4 text-lg">

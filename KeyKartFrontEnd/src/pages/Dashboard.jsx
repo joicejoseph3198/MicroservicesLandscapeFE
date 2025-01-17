@@ -85,8 +85,6 @@ export const Dashboard = () => {
     <>
     {/*BEGIN Page Navigation*/}
       <div className="px-2 lg:px-10">
-        <p className="text-md text-left text-gray flex flex-row items-center hover:cursor-pointer" onClick={()=>backToListing()}>
-            <MdArrowBack/> Back to product list</p>
         <h2 className="text-5xl lg:text-8xl text-left text-slate-700 font-['NeueBit']">
            {id ? "Dashboard/ View-Update-Schedule" : "Dashboard/Add New Product"}
         </h2>
