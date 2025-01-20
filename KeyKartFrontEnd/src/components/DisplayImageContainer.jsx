@@ -58,7 +58,7 @@ const DisplayImageContainer = (props) => {
       }
         
         <h3 className={`absolute bottom-2 right-2 border-slate-400 
-        ${productData?.status.toUpperCase() === "START BIDDING" ? "bg-green-400 animate-bounce" : "bg-white"}
+        ${productData?.status.toUpperCase() === "START BIDDING" ? "bg-blue-700 animate-bounce text-white border-blue-700" : "bg-white"}
          border-2 text-black text-lg rounded-full font-['NeueBit'] m-1 px-4 w-fit`} title='View Details'>
             {productData?.status.toUpperCase()}
         </h3>

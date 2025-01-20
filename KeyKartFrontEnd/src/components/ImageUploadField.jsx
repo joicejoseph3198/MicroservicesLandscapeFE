@@ -1,13 +1,15 @@
+import { FiDelete } from "react-icons/fi";
 import { useEffect } from "react";
 
 export const ImageUploadField = (props) => {
-  const {previewUrls} = props; 
+  const {previewUrls,imgRemoveHandler} = props; 
+
   return (
     <div className="w-full flex flex-col items-center justify-center md:flex-row gap-2 h-screen md:h-48">
       {previewUrls.map((previewUrl, index) => (
         <div
           key={index}
-          className="w-full h-full border-2 border-dashed border-blue-500 rounded-md p-5 flex items-center justify-center overflow-hidden"
+          className="relative w-full h-full border-2 border-dashed border-blue-500 rounded-md p-5 flex items-center justify-center overflow-hidden"
         >
           {typeof previewUrl === 'string' ? (
             <img
@@ -24,6 +26,7 @@ export const ImageUploadField = (props) => {
           ) : (
             <span className="text-blue-500 text-2xl">+</span>
           )}
+          <FiDelete className="size-5 absolute top-0 right-0 stroke-blue-500 m-1 hover:cursor-pointer" onClick={()=> imgRemoveHandler(index)}/>
         </div>     
       ))}
         {previewUrls.length < 3 &&

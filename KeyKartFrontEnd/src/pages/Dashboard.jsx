@@ -3,6 +3,7 @@ import { ImageUploadField } from "../components/ImageUploadField";
 import { InputTextField } from "../components/InputTextField";
 import { InputTextFieldWithButton } from "../components/InputTextFieldWithButton";
 import {
+  discardImage,
   resetImages,
   setSelectedImages,
   uploadToBucket,
@@ -17,15 +18,13 @@ import {
 } from "../redux/slices/addProductSlice";
 import { useEffect, useState } from "react";
 import { useAxios } from "../utils/axiosUtil";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuctionModal from "../components/AuctionModal";
-import { MdArrowBack } from "react-icons/md";
 
 export const Dashboard = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const axiosInstance = useAxios();
 
   const previewUrls = useSelector((state) => state.imageUpload.previewUrls);
@@ -35,10 +34,9 @@ export const Dashboard = () => {
 
 
   useEffect(() => {
-    if (storageUrls.length >= 1) {
-      // add bucket urls to product data
-      dispatch(addProductImages(storageUrls));
-    }
+    console.log("Storage urls", storageUrls)
+    // add bucket urls to product data
+    dispatch(addProductImages(storageUrls));
   }, [storageUrls, dispatch]);
 
   useEffect(() => {
@@ -63,23 +61,23 @@ export const Dashboard = () => {
     dispatch(updateField({ name, value }));
   };
 
+  const handleImageRemove = (index) =>{
+    dispatch(discardImage({position:index}));
+  }
+
   const handleResetForm = () => {
     dispatch(resetImages());
     dispatch(resetForm());
   };
 
-  const handleFormSubmission = async () => {
-    const response = await dispatch(createProduct({ productData, axiosInstance })).unwrap();
+  const handleFormSubmission = () => {
+    const response = dispatch(createProduct({ productData, axiosInstance }));
     console.log("SUBMISSION RESPONSE",response.data.status)
     if(response?.data?.status === "true" ){
       toast.success("Request processed successfully.")
     }
     toast.error("Request processing un-successful.")
   };
-
-  const backToListing = () => {
-    navigate('/admin-section/listing');
-  }
 
   return (
     <>
@@ -210,7 +208,7 @@ export const Dashboard = () => {
                     ></input>
                   </>
                 )}
-                {id ? <ImageUploadField previewUrls={productData.productImages} /> :<> <ImageUploadField previewUrls={previewUrls} /></>}
+                {id ? <ImageUploadField previewUrls={productData.productImages} /> :<> <ImageUploadField previewUrls={previewUrls} imgRemoveHandler={handleImageRemove} /></>}
               </div>
             </div>
             {/*END Product Images Section*/}

@@ -63,16 +63,26 @@ const imageUploadSlice = createSlice({
             state.previewUrls = [...state.previewUrls,{ url: action.payload, position: state.previewUrls.length }];
         },
         discardImage: (state,action) => {
-            // discard from the store and trigger async call to remove from storage as well
-            state.previewUrls = state.previewUrls.filter((_,index) => index !== action.payload.position);
-            state.storageUrls = state.storageUrls.filter((_,index) => index !== action.payload.position);
-            // update index of remaining images
-            state.images.forEach((image, index) => {
-                image.position = index;
+            const positionToRemove = action.payload.position;
+
+            // Create a copy of the arrays to maintain immutability
+            const updatedPreviewUrls = [...state.previewUrls];
+            const updatedStorageUrls = [...state.storageUrls];
+
+            // Remove the image at the given position in previewUrls
+            updatedPreviewUrls.splice(positionToRemove, 1);
+
+            // Remove the URL at the same position in storageUrls
+            updatedStorageUrls.splice(positionToRemove, 1);
+
+            // Update the position for the remaining images in previewUrls
+            updatedPreviewUrls.forEach((image, index) => {
+                image.position = index; // Reassign positions after removal
             });
-            state.previewUrls.forEach((previewUrl, index) => {
-                previewUrl.position = index;
-            });
+
+            // Update state with the new arrays
+            state.previewUrls = updatedPreviewUrls;
+            state.storageUrls = updatedStorageUrls;
         },
         resetImages: (state)=> {
             state.previewUrls = [];
