@@ -23,7 +23,7 @@ const ImageSlide = (props) => {
             <img 
                 src={imageUrls[currentIndex]} 
                 alt={`Product ${currentIndex + 1}`}
-                className="object-fit rounded-md border-2 border-slate-600"
+                className="object-fit rounded-md border-2 border-slate-600 w-full lg:w-4/5"
             />
             <div className='text-slate-600  flex flex-row text-2xl lg:text-5xl font-[NeueBit]'>
                 <button className='border-2 border-slate-600 px-4 m-2 bg-white' onClick={handlePrevious}>{"<"}</button>

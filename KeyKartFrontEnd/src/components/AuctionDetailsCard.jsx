@@ -15,15 +15,8 @@ const AuctionDetailsCard = () => {
     const auctionDetails = useSelector((state)=> state.auction)
     const dispatch = useDispatch();
     const axiosInstance = useAxios();
-    const { user } = useAuth0();
     const { id } = useParams();
 
-    const { isConnected } = useAuctionSSE({
-        auctionId: auctionDetails?.id,
-        clientId: user?.email,
-        skuCode: id,
-        axiosInstance,
-      });
 
     useEffect(()=>{
         dispatch(fetchAuctionDetails({skuCode: id, axiosInstance}))
@@ -92,15 +85,15 @@ const AuctionDetailsCard = () => {
                 return (
                     <>
                         <h3 className='text-sm md:text-md'>{ auctionDetails?.highestBid ? "CURRENT HIGHEST BID": "BID START PRICE"}</h3>
-                        <div className="flex flex-row items-center text-xl md:text-3xl">
+                        <div className="flex flex-row items-center text-xl">
                             <MdCurrencyRupee /> { auctionDetails?.highestBid ? auctionDetails?.highestBid : auctionData?.bidStartPrice || "NIL"}
                         </div>
                         <h3 className='text-sm md:text-md'>BUY NOW PRICE</h3>
-                        <div className="flex flex-row items-center text-xl md:text-3xl">
+                        <div className="flex flex-row items-center text-xl">
                             <MdCurrencyRupee /> {auctionData?.buyNowPrice || "NIL"}
                         </div>
                         <h3 className='text-sm md:text-md'>AUCTION ENDS IN</h3>
-                        <div className="flex flex-row items-center text-2xl md:text-5xl">
+                        <div className="flex flex-row items-center text-3xl">
                         {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
                         </div>
                     </>
@@ -109,15 +102,15 @@ const AuctionDetailsCard = () => {
                 return (
                     <>
                         <h3 className='text-sm md:text-md'>AUCTION START</h3>
-                        <div className="flex flex-row items-center text-2xl lg:text-2xl">
+                        <div className="flex flex-row items-center text-2xl">
                             {dayjs(auctionData?.startTime).format('DD-MM-YYYY HH:mm:ss')}
                         </div>
                         <h3 className='text-sm md:text-md'>AUCTION END</h3>
-                        <div className="flex flex-row items-center text-2xl lg:text-2xl">
+                        <div className="flex flex-row items-center text-2xl">
                             {dayjs(auctionData?.endTime).format('DD-MM-YYYY HH:mm:ss')}
                         </div>
                         <h3 className='text-sm md:text-md'>AUCTION BEGINS IN</h3>
-                        <div className="flex flex-row items-center text-2xl lg:text-4xl">
+                        <div className="flex flex-row items-center text-2xl">
                         {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
                         </div>
                     </>
@@ -130,19 +123,19 @@ const AuctionDetailsCard = () => {
     };
 
     return (
-        <div className='text-left text-md lg:text-lg lg:px-5 text-slate-500 rounded-md flex flex-col justify-center text-lg w-fit'>
+        <div className='text-left text-md lg:text-lg lg:px-5 text-slate-500 rounded-md flex flex-col justify-center w-fit'>
             <div className='p-2'>
             <p className='text-sm lg:text-xl py-5'> SKU : {auctionData?.productSkuCode?.toUpperCase() || "N/A"} | <span className='text-black font-[MoriBold] '>{auctionData?.auctionStatus || "CURRENTLY UNAVAILABLE"}</span></p>
             <div className='border-t-2 border-slate-300 py-5'>
                 <div className='text-md lg:text-lg text-left text-black'>
                     <div className=" text-left flex flex-col gap-2">
                        {renderAuctionDetails()}
-                        </div>
                     </div>
                 </div>
             </div>
+            </div>
            
-            <div className='flex flex-col border-t-2 gap-5 py-5 text-sm lg:text-lg'>
+            <div className='flex flex-col border-t-2 gap-5 py-5 text-sm lg:text-lg p-2'>
                 <h2 className='text-slate-black'> How it works?</h2>
                 <div className='text-black'>
                    Bidding:
