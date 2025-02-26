@@ -1,3 +1,4 @@
+import SearchBar from '../components/SearchBar';
 import DisplayGrid from '../components/DisplayGrid'
 
 const Shop = () => {
@@ -8,6 +9,7 @@ const Shop = () => {
             <img  className=" w-full md:-translate-y-[200px] lg:-translate-y-1/3" src="src/assets/images/switchbanner.webp"></img>
             <p className="absolute text-slate-700 bottom-28 md:bottom-10 left-0 px-8 text-3xl font-['NeueBit']">All Products</p>
         </div>
+        <SearchBar/>
         <DisplayGrid/>
     </div>
   )

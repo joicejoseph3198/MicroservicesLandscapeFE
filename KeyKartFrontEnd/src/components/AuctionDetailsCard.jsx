@@ -1,17 +1,14 @@
 import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { MdCurrencyRupee } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { CustomButton } from './CustomButton';
 import { setBiddingModalSku } from '../redux/slices/shopSlice';
-import useAuctionSSE from '../hooks/useAuctionSSE';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useAxios } from '../utils/axiosUtil';
 import { fetchAuctionDetails } from '../redux/slices/auctionSlice';
 import { useParams } from 'react-router-dom';
 
 const AuctionDetailsCard = () => {
-    const auctionData = useSelector((state) => state.aggregation.auction);
     const auctionDetails = useSelector((state)=> state.auction)
     const dispatch = useDispatch();
     const axiosInstance = useAxios();
@@ -25,8 +22,8 @@ const AuctionDetailsCard = () => {
     const openModal = (type) => {
         dispatch(setBiddingModalSku({skuCode: id, modalType: type}));
     };
-    const [timeLeft, setTimeLeft] = useState({});
 
+    const [timeLeft, setTimeLeft] = useState({});
 
     const calculateTimeLeft = useCallback((givenTime) => {
         const now = dayjs();
@@ -58,10 +55,10 @@ const AuctionDetailsCard = () => {
     useEffect(() => {
         // Determine the target time based on auction status
         const targetTime =
-            auctionData?.auctionStatus?.toUpperCase() === 'START BIDDING'
-                ? auctionData?.endTime
-                : auctionData?.auctionStatus?.toUpperCase() === 'COMING SOON'
-                ? auctionData?.startTime
+            auctionDetails?.auctionStatus?.toUpperCase() === 'START BIDDING'
+                ? auctionDetails?.endTime
+                : auctionDetails?.auctionStatus?.toUpperCase() === 'COMING SOON'
+                ? auctionDetails?.startTime
                 : null;
     
         if (targetTime) {
@@ -75,22 +72,22 @@ const AuctionDetailsCard = () => {
         
             return () => clearInterval(timer);
         }
-    }, [auctionData?.auctionStatus, auctionData?.endTime, auctionData?.startTime, calculateTimeLeft]);
+    }, [auctionDetails?.auctionStatus, auctionDetails?.endTime, auctionDetails?.startTime, calculateTimeLeft]);
     
 
 
     const renderAuctionDetails = () => {
-        switch (auctionData?.auctionStatus?.toUpperCase()) {
+        switch (auctionDetails?.auctionStatus?.toUpperCase()) {
             case 'START BIDDING':
                 return (
                     <>
                         <h3 className='text-sm md:text-md'>{ auctionDetails?.highestBid ? "CURRENT HIGHEST BID": "BID START PRICE"}</h3>
                         <div className="flex flex-row items-center text-xl">
-                            <MdCurrencyRupee /> { auctionDetails?.highestBid ? auctionDetails?.highestBid : auctionData?.bidStartPrice || "NIL"}
+                            <MdCurrencyRupee /> { auctionDetails?.highestBid ? auctionDetails?.highestBid : auctionDetails?.bidStartPrice || "NIL"}
                         </div>
                         <h3 className='text-sm md:text-md'>BUY NOW PRICE</h3>
                         <div className="flex flex-row items-center text-xl">
-                            <MdCurrencyRupee /> {auctionData?.buyNowPrice || "NIL"}
+                            <MdCurrencyRupee /> {auctionDetails?.buyNowPrice || "NIL"}
                         </div>
                         <h3 className='text-sm md:text-md'>AUCTION ENDS IN</h3>
                         <div className="flex flex-row items-center text-3xl">
@@ -103,11 +100,11 @@ const AuctionDetailsCard = () => {
                     <>
                         <h3 className='text-sm md:text-md'>AUCTION START</h3>
                         <div className="flex flex-row items-center text-2xl">
-                            {dayjs(auctionData?.startTime).format('DD-MM-YYYY HH:mm:ss')}
+                            {dayjs(auctionDetails?.startTime).format('DD-MM-YYYY HH:mm:ss')}
                         </div>
                         <h3 className='text-sm md:text-md'>AUCTION END</h3>
                         <div className="flex flex-row items-center text-2xl">
-                            {dayjs(auctionData?.endTime).format('DD-MM-YYYY HH:mm:ss')}
+                            {dayjs(auctionDetails?.endTime).format('DD-MM-YYYY HH:mm:ss')}
                         </div>
                         <h3 className='text-sm md:text-md'>AUCTION BEGINS IN</h3>
                         <div className="flex flex-row items-center text-2xl">
@@ -115,8 +112,25 @@ const AuctionDetailsCard = () => {
                         </div>
                     </>
                 );
-            case 'ENDED':
-                return <p>The auction has ended.</p>;
+            case 'SOLD OUT':
+                return (
+                    <>
+                        <h3 className='text-sm md:text-md'>AUCTION CONCLUDED ON</h3>
+                        <div className="flex flex-row items-center text-2xl">
+                            {dayjs(auctionDetails?.endTime).format('DD-MM-YYYY HH:mm:ss')}
+                        </div>
+                        {
+                        auctionDetails?.highestBid && (
+                            <>
+                                <h3 className='text-sm md:text-md'>SOLD FOR</h3>
+                                <div className="flex flex-row items-center text-3xl">
+                                    <MdCurrencyRupee /> {auctionDetails?.highestBid}
+                                </div>
+                            </>
+                        )}    
+                    </>
+                )
+                
             default:
                 return <p>Auction status not available.</p>;
         }
@@ -125,7 +139,7 @@ const AuctionDetailsCard = () => {
     return (
         <div className='text-left text-md lg:text-lg lg:px-5 text-slate-500 rounded-md flex flex-col justify-center w-fit'>
             <div className='p-2'>
-            <p className='text-sm lg:text-xl py-5'> SKU : {auctionData?.productSkuCode?.toUpperCase() || "N/A"} | <span className='text-black font-[MoriBold] '>{auctionData?.auctionStatus || "CURRENTLY UNAVAILABLE"}</span></p>
+            <p className='text-sm lg:text-xl py-5'> SKU : {auctionDetails?.productSkuCode?.toUpperCase() || "N/A"} | <span className='text-black'>{auctionDetails?.auctionStatus?.toUpperCase() || "CURRENTLY UNAVAILABLE"}</span></p>
             <div className='border-t-2 border-slate-300 py-5'>
                 <div className='text-md lg:text-lg text-left text-black'>
                     <div className=" text-left flex flex-col gap-2">
@@ -135,7 +149,7 @@ const AuctionDetailsCard = () => {
             </div>
             </div>
            
-            <div className='flex flex-col border-t-2 gap-5 py-5 text-sm lg:text-lg p-2'>
+            <div className='flex flex-col border-t-2 gap-5 py-5 text-md p-2'>
                 <h2 className='text-slate-black'> How it works?</h2>
                 <div className='text-black'>
                    Bidding:
@@ -154,7 +168,7 @@ const AuctionDetailsCard = () => {
                 </div>
             </div>
            
-            {   auctionData?.auctionStatus?.toUpperCase() === 'START BIDDING' && (
+            {   auctionDetails?.auctionStatus?.toUpperCase() === 'START BIDDING' && (
                     <div className='flex flex-row border-t-2 gap-5 pt-5 text-lg'>
                         <CustomButton buttonText="Place Bid" color="blue" onClickHandler={()=>openModal("BID")} />
                         <CustomButton buttonText="Trigger Buy Now" color="white"  onClickHandler={()=>openModal("BUY")} />

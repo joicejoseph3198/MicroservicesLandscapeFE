@@ -99,7 +99,7 @@ const AuctionModal = (props) => {
                             <MdCurrencyRupee /> {productData.buyNowPrice}
                         </div>
                        
-                        {auctionDetails?.auctionStatus ?
+                        {auctionDetails?.auctionStatus && auctionDetails?.auctionStatus !== "Sold Out" ?
                          <> 
                          <h3>Auction Start</h3>
                             <div className="flex flex-row items-center text-4xl lg:text-4xl">

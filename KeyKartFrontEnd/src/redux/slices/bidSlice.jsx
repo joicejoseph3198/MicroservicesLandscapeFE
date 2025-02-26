@@ -7,7 +7,6 @@ export const placeBid = createAsyncThunk(
         try{
             const {requestBody, axiosInstance} = params;
             const response = await axiosInstance.post(`/auction/bid/place-bid`, requestBody);
-            console.log("BID RESPONSE", response?.data)
             return response?.data;
         }catch(error){
             console.log(error)

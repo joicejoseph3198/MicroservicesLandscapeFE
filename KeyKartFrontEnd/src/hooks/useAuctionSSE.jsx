@@ -43,18 +43,21 @@ const useAuctionSSE = ({ auctionId, clientId, skuCode, axiosInstance }) => {
       eventSource.onmessage = (event) => {
         try {
           const parsedEvent = JSON.parse(event.data);
-          console.log("PARSED EVENT DATA", parsedEvent)
           switch (parsedEvent.eventType) {
             case 'CONNECTION_ESTABLISHED':
               console.debug('Connected:', parsedEvent.data);
               break;
-            
             case 'HEARTBEAT':
               console.debug('Heartbeat received');
               break;
             
             case 'NEW_HIGHEST_BID':
-              toast.success(`${parsedEvent.data}`);
+              toast.info(`${parsedEvent.data}`);
+              dispatch(fetchAuctionDetails({ skuCode, axiosInstance }));
+              break;
+
+            case 'LIVE':
+              toast.info(`${parsedEvent.data}`);
               dispatch(fetchAuctionDetails({ skuCode, axiosInstance }));
               break;
             
@@ -62,13 +65,18 @@ const useAuctionSSE = ({ auctionId, clientId, skuCode, axiosInstance }) => {
               toast.success('Your bid was accepted!');
               dispatch(fetchAuctionDetails({ skuCode, axiosInstance }));
               break;
+
+              case 'AUCTION_WON':
+                toast.success(`${parsedEvent.data}`);
+                dispatch(fetchAuctionDetails({ skuCode, axiosInstance }));
+                break;
             
             case 'BID_FAILED':
               toast.error(parsedEvent.data || 'Bid failed. Please try again.');
               break;
             
             case 'AUCTION_OVER':
-              toast.info(`Auction has ended. Sold for: ₹${parsedEvent.data}`);
+              toast.info(`${parsedEvent.data}`);
               dispatch(fetchAuctionDetails({ skuCode, axiosInstance }));
               eventSource.close();
               break;

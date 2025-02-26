@@ -29,12 +29,12 @@ const ProductDetails = () => {
     dispatch(setBidAmount(0));
   }, [dispatch]);
 
-   const { isConnected } = useAuctionSSE({
+   const {isConnected } = useAuctionSSE({
           auctionId: auctionDetails?.id,
           clientId: user?.email,
           skuCode: id,
           axiosInstance,
-        });
+    });
 
   return (
     <div className="p-5 lg:p-10">
@@ -42,15 +42,15 @@ const ProductDetails = () => {
         {" "}
         Details / {productData?.productName}
       </p>
-      <div className="flex flex-col lg:flex-row justify-center items-center gap-10 px-10">
+      <div className="flex flex-col lg:flex-row justify-center items-center py-5 lg:items-start gap-10 px-10">
         <div className="flex w-full py-5">
           <ImageSlide imageUrls={productData?.productImages || []} />
         </div>
 
-        <div className="tab-container flex flex-col border-2 p-2 rounded-md pt-10">
+        <div className="tab-container flex flex-col border-2 p-2 rounded-md pt-5 pb-5 h-fit w-fit">
           <div
-            className="tab-list flex flex-row gap-2 border-2 p-2 mx-5 w-fit rounded-md
-                     [&>*]:text-sm text-slate-500 [&>*]:bg-white [&>*]:p-2 [&>*]:rounded-md"
+            className="tab-list flex flex-row gap-2 border-2 p-2 mx-5 rounded-md
+                     [&>*]:text-sm text-slate-500 w-fit xl:w-max [&>*]:bg-white [&>*]:p-2 [&>*]:rounded-md"
           >
             <button
               className={`${
@@ -93,13 +93,13 @@ const ProductDetails = () => {
             </div>
           )}
           {activeTab == "Product Description" && (
-            <div className="flex">
-              <div className="py-5 max-h-screen lg:w-full text-left text-md ">
+            <div className="flex w-fit">
+              <div className="max-h-screen lg:w-full text-left text-md px-5">
                 <div className="p-2">
-                  <p className="text-sm md:text-md border-b-2 py-5 border-slate-300">
+                  <p className="text-sm md:text-lg border-b-2 py-5 border-slate-300">
                     PRODUCT DESCRIPTION
                   </p>
-                  <div className="py-5">
+                  <div className="py-2">
                     {productData?.productDescription
                       ?.split("\n")
                       .map((line, index) => (

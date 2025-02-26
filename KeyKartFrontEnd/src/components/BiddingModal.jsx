@@ -4,13 +4,13 @@ import { InputTextField } from "./InputTextField";
 import { MdCurrencyRupee } from "react-icons/md";
 import { MdClear } from "react-icons/md";
 import { setBidAmount } from "../redux/slices/shopSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchAuctionDetails } from "../redux/slices/auctionSlice";
 import { useAxios } from "../utils/axiosUtil";
 import { toast } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
 import { placeBid } from "../redux/slices/bidSlice";
-import useAuctionSSE from "../hooks/useAuctionSSE";
+import { useParams } from "react-router-dom";
 
 const BiddingModal = (props) => {
   const modalType = useSelector((state) => state.shop.modalType);
@@ -22,6 +22,9 @@ const BiddingModal = (props) => {
   const [bidValue, setBidValue] = useState(null);
   const { productData, closeModalHandler } = props;
 
+  const {id} = useParams();
+
+
   const placeBidRequest = async ()=> {
     const requestBody = {
       user: user?.email,
@@ -31,7 +34,23 @@ const BiddingModal = (props) => {
       buyNowTriggered: false
     }
     const response = await dispatch(placeBid({requestBody, axiosInstance}))
-        console.log("Auction schedule API response", response)
+        if(response?.payload?.status){
+            toast.success(`${response?.payload?.data}`)
+        }else{
+            toast.error(`${response?.payload?.message}` )
+        }
+        closeModalHandler();
+  }
+
+  const placeBuyNowRequest = async ()=> {
+    const requestBody = {
+      user: user?.email,
+      auctionId: auctionDetails?.id,
+      amount: auctionDetails?.buyNowPrice,
+      timeStamp: new Date().toISOString(),
+      buyNowTriggered: true
+    }
+    const response = await dispatch(placeBid({requestBody, axiosInstance}))
         if(response?.payload?.status){
             toast.success(`${response?.payload?.data}`)
         }else{
@@ -42,8 +61,12 @@ const BiddingModal = (props) => {
  
   // fetch the associated auction details
   useEffect(()=>{
-    dispatch(fetchAuctionDetails({skuCode: productData?.skuCode, axiosInstance}));
-  },[dispatch, productData?.skuCode,axiosInstance]);
+    console.log(id)
+    if (productData?.skuCode && id !== productData?.skuCode) {
+      console.log("FETCH AUCTION DETAILS FROM BIDDING MODAL")
+      dispatch(fetchAuctionDetails({ skuCode: productData?.skuCode, axiosInstance }));
+      }
+  },[productData?.skuCode]);
 
   const handleBidChange = (event) => {
     const amount = event.target.value;
@@ -173,7 +196,7 @@ const BiddingModal = (props) => {
                 <CustomButton
                   color="blue"
                   buttonText="Buy Now"
-                  onClickHandler={closeModalHandler}
+                  onClickHandler={placeBuyNowRequest}
                 />
                 <CustomButton
                   color="white"

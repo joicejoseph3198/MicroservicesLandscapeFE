@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export const Navbar = () => {
     const {loginWithRedirect, logout, getAccessTokenSilently, user, isAuthenticated} = useAuth0();
-
+    
     const handleLogin = async () => {
       await loginWithRedirect();
       if(isAuthenticated){
